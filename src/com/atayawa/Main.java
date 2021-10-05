@@ -45,7 +45,7 @@ public class Main
         }
     }
     
-    private static void createFiles()
+    private static void createFiles()   // TODO
     {
     
     }
@@ -74,7 +74,7 @@ public class Main
     private static void setPrefix(String pf)
     {
         filenamePrefix = pf;
-        if(pf.contains("."))
+        if(pf.contains("."))    // TODO Add similar logic as in setSuffix()
         {
             printPrefixHasDot();
         }
@@ -86,7 +86,7 @@ public class Main
         if(!sf.contains(".") || sf.indexOf('.') == sf.length())
         {
             printSuffixNoFileExtension();
-            boolean addDefaultExtension = true;   // Should be based on user input, need to implement that
+            boolean addDefaultExtension = true;   // TODO Should be based on user input, need to implement that
             if(addDefaultExtension)
             {
                 if(!sf.contains("."))
@@ -96,7 +96,7 @@ public class Main
         }
     }
     
-    private static void setFilenames(String fn)
+    private static void setFilenames(String fn) // TODO
     {
     
     }
@@ -131,7 +131,7 @@ public class Main
         }
     }
     
-    private static void printHelpPrompt()
+    private static void printHelpPrompt()   // TODO
     {
         if(isUnix())
         {
@@ -167,7 +167,7 @@ public class Main
             System.out.println("The specified source file is not a file");
     }
     
-    private static void printPrefixHasDot()
+    private static void printPrefixHasDot() // TODO
     {
         if(isUnix())
             System.out.printf("");
@@ -175,7 +175,7 @@ public class Main
             System.out.println("");
     }
     
-    private static void printSuffixNoFileExtension()
+    private static void printSuffixNoFileExtension()    //TODO
     {
         if(isUnix())
             System.out.printf("");
