@@ -135,7 +135,7 @@ public class Main
     {
         if(isUnix())
         {
-            System.out.printf("%sUsage:%s%n", ANSI_YELLOW, ANSI_RESET);
+            System.out.printf("%sUsage:%s%n", Color.YELLOW.code(), Color.RESET.code());
         }
         else
         {
@@ -146,7 +146,7 @@ public class Main
     private static void printSourceFileCannotBeFound()
     {
         if(isUnix())
-            System.out.printf("%sThe specified source file doesn't exist%s%n", ANSI_CYAN, ANSI_RESET);
+            System.out.printf("%sThe specified source file doesn't exist%s%n", Color.CYAN.code(), Color.RESET.code());
         else
             System.out.println("The specified source file doesn't exist");
     }
@@ -154,7 +154,7 @@ public class Main
     private static void printSourceFileCannotBeRead()
     {
         if(isUnix())
-            System.out.printf("%sThe specified source file cannot be read%s%n", ANSI_CYAN, ANSI_RESET);
+            System.out.printf("%sThe specified source file cannot be read%s%n", Color.CYAN.code(), Color.RESET.code());
         else
             System.out.println("The specified source file cannot be read");
     }
@@ -162,7 +162,7 @@ public class Main
     private static void printSourceFileIsNotAFile()
     {
         if(isUnix())
-            System.out.printf("%sThe specified source file is not a file%s%n", ANSI_CYAN, ANSI_RESET);
+            System.out.printf("%sThe specified source file is not a file%s%n", Color.CYAN.code(), Color.RESET.code());
         else
             System.out.println("The specified source file is not a file");
     }
@@ -186,9 +186,9 @@ public class Main
     private static void printWrongCommandMessage(String cmd)
     {
         if(isUnix())
-            System.out.printf("%sNo such command: %s%nPlease check your input%s%n", ANSI_CYAN, cmd, ANSI_RESET);
+            System.out.printf("%sIncorrect argument: %s%nPlease check your input%s%n", Color.CYAN.code(), cmd, Color.RESET.code());
         else
-            System.out.printf("No such command: %s%nPlease check your input", cmd);
+            System.out.printf("Incorrect argument: %s%nPlease check your input", cmd);
     }
     
     private static boolean isUnix()
@@ -216,10 +216,4 @@ public class Main
         }
         
     }
-    private static final String ANSI_RESET = "\033[0m";
-    private static final String ANSI_RED = "\033[0;31m";
-    private static final String ANSI_GREEN = "\033[0;32m";
-    private static final String ANSI_YELLOW = "\033[0;33m";
-    private static final String ANSI_CYAN = "\033[0;36m";
-    private static final String ANSI_WHITE = "\033[0;37m";
 }
