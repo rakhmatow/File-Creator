@@ -1,6 +1,7 @@
 package com.atayawa;
 
 import java.io.File;
+import java.util.LinkedList;
 
 public class Main
 {
@@ -9,7 +10,8 @@ public class Main
     private static File sourceFile;
     private static String filenamePrefix;
     private static String filenameSuffix;
-    private static int[] filenames;
+    private static String outputDirectory;  // TODO Find if "File" class can be used to store the directory's path
+    private static LinkedList<String> filenames;
     
     public static void main(String[] args)
     {
@@ -38,6 +40,9 @@ public class Main
                 case "filenames":
                     setFilenames(args[++i]);
                     break;
+                case "outputDirectory":
+                    setOutputDirectory(args[++i]);
+                    break;
                 case "wrongCommand":
                     printWrongCommandMessage(args[i]);
                     break;
@@ -47,7 +52,10 @@ public class Main
     
     private static void createFiles()   // TODO
     {
-    
+        for(var fileName : filenames)
+        {
+
+        }
     }
     
     private static void setSourceFile(String filePath)
@@ -74,31 +82,68 @@ public class Main
     private static void setPrefix(String pf)
     {
         filenamePrefix = pf;
-        if(pf.contains("."))    // TODO Add similar logic as in setSuffix()
+        if(pf.contains("."))
         {
-            printPrefixHasDot();
+            printPrefixHasDots(pf.indexOf(".") != pf.lastIndexOf("."));
+            boolean keepDotsInSuffix = System.console().readLine().equalsIgnoreCase("y");
+            if(!keepDotsInSuffix)
+            {
+                printDotsInPrefixRemoved(pf.indexOf(".") != pf.lastIndexOf("."));
+                filenamePrefix = pf.replace(".", "");
+            }
         }
     }
     
     private static void setSuffix(String sf)
     {
         filenameSuffix = sf;
-        if(!sf.contains(".") || sf.indexOf('.') == sf.length())
+        if(!sf.contains(".") || !sf.endsWith("."))  // TODO Need to fix this wrong logix of finding when there is no file extension
         {
             printSuffixNoFileExtension();
-            boolean addDefaultExtension = true;   // TODO Should be based on user input, need to implement that
+            boolean addDefaultExtension = System.console().readLine().equalsIgnoreCase("y");
             if(addDefaultExtension)
             {
-                if(!sf.contains("."))
+                if(!sf.endsWith("."))
                     filenameSuffix += '.';
                 filenameSuffix += DEFAULT_FILE_EXTENSION;
+                printDefaultFileExtensionAdded();
             }
         }
     }
     
-    private static void setFilenames(String fn) // TODO
+    private static void setFilenames(String fn)
     {
-    
+        String[] parsedInput = fn.split(",");
+        for(String i : parsedInput)
+        {
+            if(i.contains("-"))
+            {
+                try
+                {
+                    int firstIndex = Integer.parseInt(i.substring(0, i.indexOf("-")));
+                    int lastIndex = Integer.parseInt(i.substring(i.lastIndexOf("-") + 1));
+                    for(int j = firstIndex; j <= lastIndex; j++)
+                    {
+                        filenames.add(Integer.toString(j));
+                    }
+                }
+                catch (NumberFormatException e) // TODO
+                {
+                }
+                catch (Exception e) // TODO
+                {
+                }
+            }
+            else
+            {
+                filenames.add(i);
+            }
+        }
+    }
+
+    private static void setOutputDirectory(String outDir)   // TODO
+    {
+
     }
     
     private static String commandInterpreter(String cmd)
@@ -167,20 +212,47 @@ public class Main
             System.out.println("The specified source file is not a file");
     }
     
-    private static void printPrefixHasDot() // TODO
+    private static void printPrefixHasDots(boolean isMany)
     {
         if(isUnix())
-            System.out.printf("");
+        {
+            System.out.printf("%sThe specified file prefix contains %s%n", Color.CYAN.code(), isMany ? "dots" : "a dot");
+            System.out.printf("Are you sure you want to keep %s? [Y/n]%s ", isMany ? "them" : "it", Color.RESET.code());
+        }
         else
-            System.out.println("");
+        {
+            System.out.printf("The specified file prefix contains %s%n", isMany ? "dots" : "a dot");
+            System.out.printf("Are you sure you want to keep %s? [Y/n] %n", isMany ? "them" : "it");
+        }
+
+    }
+
+    private static void printDotsInPrefixRemoved(boolean isMany)
+    {
+        if(isUnix())
+            System.out.printf("%sThe %s been successfully removed from the prefix%s%n", Color.GREEN.code(), isMany ? "dots have" : "dot has", Color.RESET.code());
+        else
+            System.out.printf("The %s been successfully removed from the prefix%n", isMany ? "dots have" : "dot has");
     }
     
-    private static void printSuffixNoFileExtension()    //TODO
+    private static void printSuffixNoFileExtension()
     {
         if(isUnix())
-            System.out.printf("");
+            System.out.printf("%sThe specified file suffix does not contain a file extension%n" +
+                            "Do you want to add a default file extension(.java)? [Y/n]%s ", Color.CYAN.code(), Color.RESET.code());
         else
-            System.out.println("");
+        {
+            System.out.println("The specified file suffix does not contain a file extension");
+            System.out.print("Do you want to add a default file extension? (.java) [Y/n] ");
+        }
+    }
+
+    private static void printDefaultFileExtensionAdded()
+    {
+        if(isUnix())
+            System.out.printf("%sDefault file extension (.java) successfully added to the files%s%n", Color.GREEN.code(), Color.RESET.code());
+        else
+            System.out.println("Default file extension (.java) successfully added to the files");
     }
     
     private static void printWrongCommandMessage(String cmd)
